@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fun Click Counter</title>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            transition: background 0.5s ease;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .counter {
+            font-size: 3rem;
+            margin: 15px 0;
+        }
+
+        .joke-box {
+            margin-top: 20px;
+            font-size: 1rem;
+            min-height: 50px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            margin: 8px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .click-btn {
+            background: #00e676;
+            color: #004d40;
+        }
+
+        .reset-btn {
+            background: #ff5252;
+            color: white;
+        }
+
+        .joke-btn {
+            background: #40c4ff;
+            color: #003c8f;
+        }
+
+        .clear-btn {
+            background: #b388ff;
+            color: #2e004f;
+        }
+
+        /* Theme button */
+        .theme-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.85);
+            color: #333;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-btn" onclick="changeTheme()">🎨 Theme</button>
+
+    <div class="container">
+        <h1>Fun Click Counter</h1>
+
+        <div class="counter" id="count">0</div>
+
+        <button class="click-btn" onclick="increment()">Click Me</button>
+        <button class="reset-btn" onclick="resetCounter()">Reset</button>
+
+        <div class="joke-box" id="joke">Press the joke button 😄</div>
+
+        <button class="joke-btn" onclick="tellJoke()">Tell Me a Joke</button>
+        <button class="clear-btn" onclick="clearJoke()">Clear Joke</button>
+    </div>
+
+    <script>
+        let count = 0;
+        let themeIndex = 0;
+
+        const themes = [
+            "linear-gradient(135deg, #667eea, #764ba2)",
+            "linear-gradient(135deg, #ff9a9e, #fad0c4)",
+            "linear-gradient(135deg, #43cea2, #185a9d)",
+            "linear-gradient(135deg, #f7971e, #ffd200)",
+            "linear-gradient(135deg, #fc5c7d, #6a82fb)"
+        ];
+
+        const jokes = [
+            "Why don’t programmers like nature? Too many bugs.",
+            "Why do Java developers wear glasses? Because they don’t C#.",
+            "I told my computer I needed a break — it froze.",
+            "Why was the JavaScript developer sad? Because they didn’t know how to ‘null’.",
+            "Why did the programmer quit their job? Because they didn’t get arrays."
+        ];
+
+        function increment() {
+            count++;
+            document.getElementById("count").textContent = count;
+        }
+
+        function resetCounter() {
+            count = 0;
+            document.getElementById("count").textContent = count;
+        }
+
+        function changeTheme() {
+            themeIndex = (themeIndex + 1) % themes.length;
+            document.body.style.background = themes[themeIndex];
+        }
+
+        function tellJoke() {
+            const randomIndex = Math.floor(Math.random() * jokes.length);
+            document.getElementById("joke").textContent = jokes[randomIndex];
+        }
+
+        function clearJoke() {
+            document.getElementById("joke").textContent = "";
+        }
+    </script>
+
+</body>
+</html>
+

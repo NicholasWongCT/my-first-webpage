@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Check-In</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f0f2f5; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .streak-badge { background: #ff4757; color: white; padding: 5px 15px; border-radius: 15px; font-weight: bold; display: inline-block; margin-bottom: 1rem; }
+        .vibe-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .vibe-btn { border: 2px solid #eee; background: none; border-radius: 12px; padding: 15px 5px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .vibe-btn:hover { border-color: #747d8c; background: #f9f9f9; transform: translateY(-2px); }
+        .vibe-btn span { display: block; font-size: 2rem; margin-bottom: 5px; }
+        #status-msg { margin-top: 20px; color: #2f3542; font-weight: 500; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div id="streak-display" class="streak-badge">🔥 Streak: 0</div>
+    <h2>How's the energy?</h2>
+    <p>Select today's vibe to keep the streak alive.</p>
+
+    <div id="check-in-area">
+        <div class="vibe-grid">
+            <button class="vibe-btn" onclick="submitVibe('High Charge', '⚡')"><span>⚡</span>High</button>
+            <button class="vibe-btn" onclick="submitVibe('Steady Flow', '🌊')"><span>🌊</span>Steady</button>
+            <button class="vibe-btn" onclick="submitVibe('Low Battery', '🪫')"><span>🪫</span>Low</button>
+            <button class="vibe-btn" onclick="submitVibe('Cloudy', '☁️')"><span>☁️</span>Cloudy</button>
+            <button class="vibe-btn" onclick="submitVibe('Radiant', '✨')"><span>✨</span>Radiant</button>
+        </div>
+    </div>
+
+    <div id="status-msg"></div>
+</div>
+
+<script>
+    const streakEl = document.getElementById('streak-display');
+    const msgEl = document.getElementById('status-msg');
+    const checkInArea = document.getElementById('check-in-area');
+
+    function init() {
+        const lastDate = localStorage.getItem('lastDate');
+        const today = new Date().toDateString();
+        let streak = parseInt(localStorage.getItem('streak')) || 0;
+
+        // Check if already checked in today
+        if (lastDate === today) {
+            msgEl.innerText = "✅ All set for today! See you tomorrow.";
+            checkInArea.classList.add('hidden');
+        } else {
+            // Check if streak was broken (missed more than 1 day)
+            if (lastDate) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastDate !== yesterday.toDateString()) {
+                    streak = 0;
+                    localStorage.setItem('streak', 0);
+                }
+            }
+        }
+        streakEl.innerText = `🔥 Streak: ${streak}`;
+    }
+
+    function submitVibe(name, emoji) {
+        let streak = parseInt(localStorage.getItem('streak')) || 0;
+        const today = new Date().toDateString();
+
+        streak++;
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastDate', today);
+
+        streakEl.innerText = `🔥 Streak: ${streak}`;
+        checkInArea.classList.add('hidden');
+        msgEl.innerHTML = `Logged: ${emoji} ${name}<br>Great job showing up today!`;
+        
+        if (streak % 5 === 0) {
+            msgEl.innerHTML += "<br>⭐ <strong>5-Day Milestone reached!</strong>";
+        }
+    }
+
+    init();
+</script>
+
+</body>
+</html>
